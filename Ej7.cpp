@@ -9,7 +9,7 @@ struct Impresion {};
 int agregar(Cola<Impresion>& col) {
   int nro;
 
-  cout << "Nro de paginas a agregar: ";
+  cout << "Nro de hojas a agregar: ";
   cin >> nro;
 
   for (int i = 0; i < nro; i++) {
