@@ -3,30 +3,18 @@
 
 using namespace std;
 
-void filtrar(Cola<int>& col, int n) {
-  Cola<int>* aux = new Cola<int>;
-  bool flag = 0;
-
-  while (!col.esVacia()) {
-    int val = col.desencolar();
-    
-    flag += val == n; // si se encontró el numero
-    
-    aux->encolar(val);
-  }
-  if (!flag) throw 404;
-  flag = 0;
-
-  while (!aux->esVacia()) {
-    int val = aux->desencolar();
-    
-    if (val != n || !flag) {
-      col.encolar(val);
-    }
-    flag += val == n;
+// capaz deba usar otra cola para contar la cantidad, pero no tengo ganas xD
+int sumar(Cola<int>& col, int n, int cantidad) {
+  int suma = 0, val = col.desencolar();
+  
+  while (cantidad > 0 && val != n) {
+    suma += val;
+    col.encolar(val);
+    val = col.desencolar();
+    cantidad--;
   }
 
-  delete aux;
+  return suma;
 }
 
 void mostrar(Cola<int>& col) {
@@ -52,16 +40,15 @@ int main(int argc, char** argv) {
     return 1;
   }
   Cola<int>* col = new Cola<int>;
+  int sum;
 
   for (int i = 2; i < argc; i++) {
     col->encolar(atoi(argv[i]));
   }
 
-  try {
-    filtrar(*col, atoi(argv[1]));
-  } catch (int) {
-    cout << "No se encontró el número!" << endl;
-    return 0;
-  }
+  cout << "Cola antes:" << endl;
   mostrar(*col);
+
+  sum = sumar(*col, atoi(argv[1]), argc-2);
+  cout << "La suma es: " << sum << endl;
 }
